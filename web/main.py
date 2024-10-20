@@ -13,7 +13,8 @@ load_dotenv()
 client = OpenAI(
   #api provider
   base_url="https://api.groq.com/openai/v1",
-  api_key = os.getenv('GROQ_API_KEY')
+  #api_key = os.getenv('GROQ_API_KEY')
+  groq_api_key = st.secrets["groq_api_key"]
 )
 
 #define function to load machine learning model
