@@ -14,7 +14,7 @@ client = OpenAI(
   #api provider
   base_url="https://api.groq.com/openai/v1",
   #api_key = os.getenv('GROQ_API_KEY')
-  api_key = st.secrets["GROQ_API_KEY"]
+  api_key = st.secrets["api_keys"]["GROQ_API_KEY"]
 )
 
 #define function to load machine learning model
@@ -181,7 +181,8 @@ def generate_email(probability, input_dict, explanation, surname):
 
 #web app front end
 st.title("Customer Churn Predictions")
-
+print("Current Directory:", os.getcwd())
+print("Files in Directory:", os.listdir())
 df = pd.read_csv("churn.csv")
 
 customers = [f"{row['CustomerId']} - {row['Surname']}" for _, row in df.iterrows()]
