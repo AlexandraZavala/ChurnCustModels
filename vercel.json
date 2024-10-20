@@ -1,4 +1,5 @@
 {
+    "version": 2,
     "builds": [
       {
         "src": "web/main.py",
@@ -12,6 +13,6 @@
       }
     ],
     "installCommand": "pip install -r web/requirements.txt",
-  "buildCommand": "streamlit run web/main.py"
+    "buildCommand": "streamlit run web/main.py"
   }
   
