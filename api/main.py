@@ -48,9 +48,9 @@ def get_prediction(data):
     rf_probability = random_forest_model.predict_proba(preprocessed_data)
     
     probabilities = {
-        'XGBoost': xgb_probability[0][1],
-        'Random Forest': rf_probability[0][1],
-        'K-nearest Neighbors': knn_probability[0][1]
+        'XGBoost': float(xgb_probability[0][1]),
+        'Random Forest': float(rf_probability[0][1]),
+        'K-nearest Neighbors': float(knn_probability[0][1])
     }
 
     return probabilities
