@@ -23,10 +23,10 @@ def load_score(filename):
 
 #xgboost_model = load_score('xgb_model.pkl')
 #naive_bayes_model = load_score('nb_model.pkl')
-random_forest_model=load_score('rf_model.pkl')
+#random_forest_model=load_score('rf_model.pkl')
 #decision_tree_model = load_score('dt_model.pkl')
 #svm_model = load_score('svm_model.pkl')
-knn_model = load_score('kn_model.pkl')
+#knn_model = load_score('kn_model.pkl')
 #voting_classifier_model = load_score('voting_clf.pkl')
 #xgboost_SMOTE_model = load_score('xgboost-SMOTE.pkl')
 #xgboost_featureEngineered_model = load_score('xgboost-feature-eng_model.pkl')
@@ -57,7 +57,7 @@ def prepare_input(credit_score, location, gender, age, tenure, balance, num_prod
 def make_predictions(input_df, input_dict):
   #call the api
   print(input_df)
-  url ="https://churncustmodels.onrender.com"
+  url ="https://churncustmodels-1.onrender.com"
 
   response = requests.post(f"{url}/predict", json=input_df)
   if response.status_code == 200:

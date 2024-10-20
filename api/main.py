@@ -57,8 +57,8 @@ def get_prediction(data):
 
 @app.post("/predict")
 async def predict(data: dict):
-    prediction, probability = get_prediction(data)
-    return {"prediction": prediction.tolist(), "probabilities": probability.tolist()}
+    probabilities = get_prediction(data)
+    return {"probabilities": probabilities.tolist()}
 
 if __name__ == "__main__":
     import uvicorn
