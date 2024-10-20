@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import numpy as np
+from io import StringIO
 #from dotenv import load_dotenv
 import os
 from openai import OpenAI
@@ -179,11 +180,20 @@ def generate_email(probability, input_dict, explanation, surname):
 
   return raw_response.choices[0].message.content
 
+def load_original_data():
+    url = 'https://raw.githubusercontent.com/AlexandraZavala/ChurnCustModels/main/web/churn.csv'
+    response = requests.get(url)
+    if response.status_code == 200:
+        return pd.read_csv(StringIO(response.text))
+    else:
+        st.error("Failed to load data from GitHub.")
+        return None
+
 #web app front end
 st.title("Customer Churn Predictions")
 print("Current Directory:", os.getcwd())
 print("Files in Directory:", os.listdir())
-df = pd.read_csv("churn.csv")
+df = load_original_data()
 
 customers = [f"{row['CustomerId']} - {row['Surname']}" for _, row in df.iterrows()]
 
