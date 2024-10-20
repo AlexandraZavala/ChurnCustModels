@@ -50,17 +50,29 @@ def prepare_input(credit_score, location, gender, age, tenure, balance, num_prod
     'Gender_Male': 1 if gender == "Male" else 0,
     'Gender_Female': 1 if gender == "Female" else 0,
   }
-  input_df = pd.DataFrame([input_dict])
+  input_df = {
+    'CreditScore': credit_score,
+    'Geography': location,
+    'Gender': gender,
+    'Age': age,
+    'Tenure': tenure,
+    'Balance': balance,
+    'NumOfProducts': num_product,
+    'HasCrCard': has_credit_card,
+    'IsActiveMember': is_active_member,
+    'EstimatedSalary': estimated_salary
+  }
   return input_df, input_dict
 
 #define a function to make prediction using the machine learning models
 def make_predictions(input_df, input_dict):
   #call the api
-  print(input_df)
+  print("INPUT DF", input_df)
   url ="https://churncustmodels-1.onrender.com"
 
   response = requests.post(f"{url}/predict", json=input_df)
   if response.status_code == 200:
+    print(response.json())
     result = response.json()
     print(result)
   else:
@@ -128,7 +140,7 @@ def explain_prediction(probability, input_dict, surname):
   
   """
 
-  print("EXPLANATION PROMPT", prompt)
+  
 
   #TODO: we can use others models
   raw_response = client.chat.completions.create(
@@ -163,7 +175,6 @@ def generate_email(probability, input_dict, explanation, surname):
     }],
   )
 
-  print(prompt)
 
   return raw_response.choices[0].message.content
 
@@ -179,11 +190,11 @@ selected_customer_option = st.selectbox("Select a customer", customers)
 if selected_customer_option: 
   selected_customer_id = int(selected_customer_option.split("-")[0])
 
-  print("Selected Customer ID", selected_customer_id)
+  
   selected_customer_name= selected_customer_option.split("-")[1]
 
   selected_customer = df.loc[df["CustomerId"] == selected_customer_id].iloc[0]
-  print(selected_customer)
+  
   
   col1, col2 = st.columns(2)
 
@@ -248,7 +259,7 @@ if selected_customer_option:
   
   input_df, input_dict = prepare_input(credit_score, location, gender, age, tenure, balance, num_products, has_credit_card, is_active_member, estimated_salary)
 
-  avg_probability = make_predictions(selected_customer, input_dict)
+  avg_probability = make_predictions(input_df, input_dict)
 
   explanation = explain_prediction(avg_probability, input_dict, selected_customer['Surname'])
 
