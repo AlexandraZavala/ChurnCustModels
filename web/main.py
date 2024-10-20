@@ -2,13 +2,13 @@ import streamlit as st
 import pandas as pd
 import pickle
 import numpy as np
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import os
 from openai import OpenAI
 import utils as ut
 import requests
 
-load_dotenv()
+#load_dotenv()
 
 client = OpenAI(
   #api provider
