@@ -74,19 +74,15 @@ def prepare_input(credit_score, location, gender, age, tenure, balance, num_prod
 #define a function to make prediction using the machine learning models
 def make_predictions(input_df, input_dict):
   #call the api
-  print("INPUT DF", input_df)
   url ="https://churncustmodels-1.onrender.com"
 
   response = requests.post(f"{url}/predict", json=input_df)
   if response.status_code == 200:
-    print(response.json())
     result = response.json()
-    print(result)
   else:
     print("Error:", response.status_code, response.text)
   
   probabilities = result['probabilities']
-  print(probabilities)
   avg_probability=np.mean(list(probabilities.values()))
 
   col1,col2=st.columns(2)
@@ -107,7 +103,6 @@ def make_predictions(input_df, input_dict):
     # Calcular el percentil del cliente seleccionado con respecto a los demás en esa métrica
     percentiles[metric] = percentileofscore(df[metric], selected_customer[metric]) / 100
 
-  print(percentiles)
   fig_percentiles = ut.create_percentiles_chart(percentiles, metrics)
   st.plotly_chart(fig_percentiles, use_container_width=True)
 
