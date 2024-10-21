@@ -52,6 +52,8 @@ def prepare_input(credit_score, location, gender, age, tenure, balance, num_prod
     'Geography_Spain': 1 if location == "Spain" else 0,
     'Gender_Male': 1 if gender == "Male" else 0,
     'Gender_Female': 1 if gender == "Female" else 0,
+    'CLV': balance*estimated_salary/100000,
+    'TenureAgeRatio': tenure/age
   }
   input_df = {
     'CreditScore': credit_score,
@@ -63,7 +65,9 @@ def prepare_input(credit_score, location, gender, age, tenure, balance, num_prod
     'NumOfProducts': num_product,
     'HasCrCard': has_credit_card,
     'IsActiveMember': is_active_member,
-    'EstimatedSalary': estimated_salary
+    'EstimatedSalary': estimated_salary,
+    'CLV': balance*estimated_salary/100000,
+    'TenureAgeRatio': tenure/age
   }
   return input_df, input_dict
 
