@@ -147,18 +147,21 @@ def explain_prediction(probability, input_dict, surname):
 
   Depending of the probability of churning describe:
   - If the customer has over a 40% risk of churning, generate a 3 sentence explanation of why they are at risk of churning.
-  - If the customer has less than a 40% risk of churning, generate a 3 sentence explanation of why they might not be at risk of churning.
+  - But if the customer has less than a 40% risk of churning, generate a 3 sentence explanation of why they might not be at risk of churning.
   - Your information should be base on the customer´s information, the summary statistics of churned and non-churned customers, and the features importance provided.
 
-  Don't mention the probability of churning, or the machine learning model, or say anything like "Based on the machine learning model's prediction and 10 top most important features", just explain the prediction Don't mention the importances of the feature.
-  
+  The explanation should be in third person, not in first person.
+  Don't mention the probability of churning, or the machine learning model, and don't say anything like "Based on the machine learning model's prediction and 10 top most important features", just explain the prediction. Don't mention the importances of the feature.
+  Don't repeat information, just explain the prediction.
+  Explain the prediction in a way that is easy to understand for a non-expert audience.
+  Don't mention ID or CustomerId, just use the customer's name.
   """
 
   
 
   #TODO: we can use others models
   raw_response = client.chat.completions.create(
-    model="llama-3.2-3b-preview",
+    model="llama-3.1-70b-versatile",
     messages=[{
       "role": "user",
       "content": prompt
@@ -202,9 +205,10 @@ def load_original_data():
         return None
 
 #web app front end
+
+
+
 st.title("Customer Churn Predictions")
-print("Current Directory:", os.getcwd())
-print("Files in Directory:", os.listdir())
 df = load_original_data()
 
 customers = [f"{row['CustomerId']} - {row['Surname']}" for _, row in df.iterrows()]
