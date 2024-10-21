@@ -4,6 +4,7 @@ import pickle
 import numpy as np
 from io import StringIO
 #from dotenv import load_dotenv
+from scipy.stats import percentileofscore
 import os
 from openai import OpenAI
 import utils as ut
@@ -94,6 +95,17 @@ def make_predictions(input_df, input_dict):
     fig_probs = ut.create_model_probability_chart(probabilities)
     st.plotly_chart(fig_probs, use_container_width=True)
   
+  #customer percentiles chart
+  metrics = ['CreditScore', 'Tenure', 'Balance', 'NumOfProducts', 'EstimatedSalary']
+  
+  percentiles = {}
+  for metric in metrics:
+    # Calcular el percentil del cliente seleccionado con respecto a los demás en esa métrica
+    percentiles[metric] = percentileofscore(df[metric], selected_customer[metric]) / 100
+
+  print(percentiles)
+  fig_percentiles = ut.create_percentiles_chart(percentiles, metrics)
+  st.plotly_chart(fig_percentiles, use_container_width=True)
 
   return avg_probability
 
@@ -269,18 +281,20 @@ if selected_customer_option:
       value=float(selected_customer["EstimatedSalary"])
     )
   
-  input_df, input_dict = prepare_input(credit_score, location, gender, age, tenure, balance, num_products, has_credit_card, is_active_member, estimated_salary)
+  if st.button("Predict"):
+    
+    input_df, input_dict = prepare_input(credit_score, location, gender, age, tenure, balance, num_products, has_credit_card, is_active_member, estimated_salary)
 
-  avg_probability = make_predictions(input_df, input_dict)
+    avg_probability = make_predictions(input_df, input_dict)
 
-  explanation = explain_prediction(avg_probability, input_dict, selected_customer['Surname'])
+    explanation = explain_prediction(avg_probability, input_dict, selected_customer['Surname'])
 
-  st.markdown('---')
-  st.subheader('Explanation of Prediction')
-  st.markdown(explanation)
+    st.markdown('---')
+    st.subheader('Explanation of Prediction')
+    st.markdown(explanation)
 
-  email=generate_email(avg_probability, input_dict, explanation, selected_customer['Surname'])
+    email=generate_email(avg_probability, input_dict, explanation, selected_customer['Surname'])
 
-  st.markdown('---')
-  st.subheader('Personalized Email')
-  st.markdown(email)
+    st.markdown('---')
+    st.subheader('Personalized Email')
+    st.markdown(email)

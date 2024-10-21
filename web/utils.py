@@ -98,4 +98,21 @@ def create_model_probability_chart(probabilities):
     margin=dict(l=20, r=20, t=40, b=20)
   )
   return fig
-  
+
+def create_percentiles_chart(percentiles, metrics):
+  #create a horizontal bar chart
+  fig = go.Figure(go.Bar(
+        x=list(percentiles.values()),  # Percentiles del cliente seleccionado
+        y=metrics,                     # Nombres de las métricas
+        orientation='h',               # Barra horizontal
+        marker=dict(color='rgb(158,202,225)', line=dict(color='rgb(8,48,107)', width=1.5))
+    ))
+  fig.update_layout(
+        title="Customer Percentiles",
+        xaxis_title="Percentil",
+        yaxis_title="Metric",
+        xaxis=dict(range=[0, 1], tickformat=".0%"),  # Mostrar percentiles en formato de porcentaje
+        yaxis=dict(showgrid=False),
+    )
+  return fig 
+    
