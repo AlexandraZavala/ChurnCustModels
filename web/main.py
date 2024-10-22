@@ -207,7 +207,7 @@ def load_original_data():
 
 
 
-st.title("Customer Churn Predictions")
+st.title("Customer Churn Prediction")
 df = load_original_data()
 
 customers = [f"{row['CustomerId']} - {row['Surname']}" for _, row in df.iterrows()]
